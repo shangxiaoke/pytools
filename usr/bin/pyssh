@@ -1,0 +1,23 @@
+#!/usr/bin/python
+#coding:utf-8
+
+import sys
+sys.path.append('/lib/pytools')
+
+import sshdo,cmdopt,os,signal
+
+#设置选项参数
+st_opt=['-i','-u','-p','-c']
+ltype=['list,file','str','str','list,file']
+lg_opt=['--ip','--uname','--passwd','--cmd']
+help=['host_ipaddr','user_name','user_passwd','commands']
+pysh=sshdo.sshdo()
+
+def cmdrun():
+    try:
+        parser=cmdopt.cmdopt(short=st_opt,long=lg_opt,type=ltype,show=help)
+        parser.run(target=pysh.run)
+        pid=os.getpid()
+    except KeyboardInterrupt:
+        os.kill(pid,signal,SIGINT)
+cmdrun()

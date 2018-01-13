@@ -1,0 +1,23 @@
+#!/usr/bin/python
+#coding:utf-8
+
+import sys
+sys.path.append('/lib/pytools')
+
+import sudo,cmdopt,os,signal
+
+#设置选项参数
+st_opt=['-i','-u','-p','-r','-c']
+ltype=['list,file','str','str','str','list,file']
+lg_opt=['--ip','--uname','--passwd','--rootpwd','--cmd']
+help=['host_ipaddr','user_name','user_passwd','root_pwd','commands']
+pysu=sudo.sudo()
+
+def cmdrun():
+    try:
+        parser=cmdopt.cmdopt(short=st_opt,long=lg_opt,type=ltype,show=help)
+        parser.run(target=pysu.run)
+        pid=os.getpid()
+    except KeyboardInterrupt:
+        os.kill(pid,signal,SIGINT)
+cmdrun()

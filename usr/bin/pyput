@@ -1,0 +1,22 @@
+#!/usr/bin/python
+#coding:utf-8
+
+import sys
+sys.path.append('/lib/pytools')
+
+import upload,cmdopt,os,signal
+
+#设置选项参数
+short=['-i','-u','-p','-m','-l']
+ltype=['list,file','str','str','dir,file','dir,file']
+long=['--ip','--uname','--passwd','--mvpath','--loadpath']
+help=['host_ipaddr','user_name','user_passwd','move_path','load_path']
+
+def cmdrun():
+    try:
+        parser=cmdopt.cmdopt(short=short,lopt=long,otype=ltype,show=help)
+        parser.run(target=upload.put)
+        pid=os.getpid()
+    except KeyboardInterrupt:
+        os.kill(pid,signal,SIGINT)
+cmdrun()

@@ -1,0 +1,3 @@
+mv ./usr/bin/* /usr/bin/
+mv ./lib/pytools /lib/
+chmod +x /usr/bin/py*
