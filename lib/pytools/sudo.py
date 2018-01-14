@@ -16,22 +16,24 @@ class sudo(object):
                         self.__ssh.connect(ip,22,uname,userpwd,timeout=10)
                         self.__sussh=self.__ssh.invoke_shell()
                         time.sleep(0.1)
-			
-			l = ['unset LANG','export PS1="[\u@\h \W]\$ "','su - root']
+
+			ps1 = 'export PS1="[\u@\h \W]# "'
+			ps2 = 'export PS1="[\u@\h \W]\$ "'
+
+			l = [ps2 ,'su - root']
 			for i in l:
-                            #time.sleep(0.1)
                             self.__sussh.send('%s\n' % i)
-                            #time.sleep(0.1)
+                            time.sleep(0.1)
 
                         resp = self.__sussh.recv(-1)
-                        while not resp.endswith(':'):
+			while not (resp.endswith('密码：') or resp.endswith('Password:')):
                             rep = self.__sussh.recv(-1)
                             resp += rep
 
                         self.__sussh.send('%s\n' % rootpwd)
-                        time.sleep(0.2)
-                        self.__sussh.send('%s\n' % 'export PS1="[\u@\h \W]# "')
-                        #time.sleep(0.1)
+                        time.sleep(0.1)
+                        self.__sussh.send('%s\n' % ps1)
+                        time.sleep(0.1)
 
                         for m in chk.cmdc(cmd):
                             time.sleep(0.1)
@@ -42,7 +44,11 @@ class sudo(object):
                         while not resp.endswith('#'):
                             rep = self.__sussh.recv(-1)
                             resp += rep
-                        print resp.lstrip()
+			re = resp.splitlines()
+
+			for i in re:
+			    if i != ' ' and i != '' and ps1 not in i:
+				print i
                         self.__ssh.close()
 
                 except Exception,e:
