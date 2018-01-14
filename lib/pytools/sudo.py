@@ -17,6 +17,7 @@ class sudo(object):
                         self.__sussh=self.__ssh.invoke_shell()
                         time.sleep(0.1)
 
+                        #root用户和普通用户默认提示符设置
 			ps1 = 'export PS1="[\u@\h \W]# "'
 			ps2 = 'export PS1="[\u@\h \W]\$ "'
 
@@ -26,6 +27,7 @@ class sudo(object):
                             time.sleep(0.1)
 
                         resp = self.__sussh.recv(-1)
+                        #中文环境或英文环境下不同密码输入返回
 			while not (resp.endswith('密码：') or resp.endswith('Password:')):
                             rep = self.__sussh.recv(-1)
                             resp += rep
@@ -44,8 +46,11 @@ class sudo(object):
                         while not resp.endswith('#'):
                             rep = self.__sussh.recv(-1)
                             resp += rep
+
+                        #命令返回结果str转list
 			re = resp.splitlines()
 
+                        #结果处理，排除自定义和杂项
 			for i in re:
 			    if i != ' ' and i != '' and ps1 not in i:
 				print i

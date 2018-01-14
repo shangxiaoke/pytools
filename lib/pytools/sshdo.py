@@ -15,6 +15,7 @@ class sshdo(object):
                     self.__sussh=self.__ssh.invoke_shell()
                     time.sleep(0.1)
 
+                    #root用户和普通用户默认提示符设置
 		    ps1 = 'export PS1="[\u@\h \W]# "'
 		    ps2 = 'export PS1="[\u@\h \W]\$ "'
 
@@ -31,7 +32,7 @@ class sshdo(object):
                             rep=self.__sussh.recv(-1)
                             resp+=rep
 
-			#命令结果str转list
+			#命令返回结果str转list
                         re = resp.splitlines()
 
 			#结果处理，排除自定义和杂项
