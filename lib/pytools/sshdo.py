@@ -57,7 +57,7 @@ class sshdo(object):
 
 			for i in re:
                             if i != ' ' and i != '' and ps2 not in i:
-                                print
+                                print i
 
                         self.__ssh.close()
                     
